@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: Empty page template</title>
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+		  // EXAMPLE
+		  linearmap = d3.scale.linear()
+		                .domain([0,100])
+		                .range([0,10])
+		  // this maps 0-100 to 0-10
+                  // you can test:
+		  // linearmap(0) // return 0
+    //               linearmap(50) // return 50
+    //               linearmap(7.9) // return 0.79
+                  // note that this will not return an error if your
+		  // input is <0 or >100
+		  // so linearmap(110) will give you 11
+
+ //------------------------------------------------------------
+		  // Step 1.1
+                  // look at the documentation for linear
+		  // notice that we can return categorical/ordinal
+		  // values in the range (e.g., [-1,0,1] -> [red,white,green]
+		  // define colorlin so that values 1,2,3,4 map
+		  // to  red,green,blue,white
+		  
+		  colorlin = d3.scale.linear()
+    					.domain([1,2,3,4])
+    					.range(["red", "green", "blue", "white"]);
+
+    		//alert(colorlin(1));
+
+		  // colorlin(1) should return red
+
+ //------------------------------------------------------------
+		  // Step 1.2
+		  // create a sqrt scale (search for sqrt in the docs)
+		  // that maps 0-1000000  to 0-20
+		  
+		  sqrtmap = d3.scale.pow().exponent(.5)
+		  				.domain([0, 1000000])
+		  				.range([0,20]);
+
+		  	//alert(sqrtmap(5000));
+
+		  // sqrtmap(100) should return .2
+		  // sqrtmap(5000) should return 1.414...
+
+ //------------------------------------------------------------
+		  // Step 1.3
+		  // same as 1.2 but use a power scaling of .25
+		  // again map 0-1000000 to 0-20
+		  // (remember that sqrt is basically a power scale of .5)
+		  
+                  powmap = d3.scale.pow().exponent(.25)
+                  				.domain([0,1000000])
+                  				.range([0,20]);
+
+                // alert(powmap(100));
+                // alert(powmap(2000));
+                // alert(powmap(20000));
+		  // powmap(100) should return 2
+		  // powmap(2000) should return 4.23
+		  // powmap(20000) should return 7.52
+
+ //------------------------------------------------------------
+		  // Step 1.4
+		  // look at the directions for the threshold scales
+		  // create a threshold scale that maps
+		  // negative temperature < -1 to blue
+                  // between -1 and 1 to white
+		  // and >= 1 to red
+		  
+		  threshmap = d3.scale.threshold().domain([-1, 1]).range(['blue', 'white', 'red']); 
+
+			// alert(threshmap(-72));
+			// alert(threshmap(-20));
+			// alert(threshmap(-1));
+			// alert(threshmap(0.9));
+			// alert(threshmap(10));
+			// alert(threshmap(1000));
+		  
+		  // threshmap(-72) and threshamp(-20) should return blue
+                  // threshmap(-1) and threshmap (0.9) should return white
+                  // threshmap(10) and threshmap(1000) should return red
+
+		</script>
+		
+	</body>
+</html>

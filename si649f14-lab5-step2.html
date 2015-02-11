@@ -1,0 +1,75 @@
+<html>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.states {
+  fill: #ccc;
+  stroke: #fff;
+}
+
+.symbol {
+  fill-opacity: .8;
+  stroke: #fff;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script>
+
+var width = 960,
+    height = 500;
+
+var path = d3.geo.path();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+// load up the json files, and when we're done, call ready
+queue()
+    .defer(d3.json, "us.json")
+    .defer(d3.json, "us-state-centroids.json")
+    .await(ready);
+
+// keep these around for later
+var us,centroid;
+
+function ready(error, u, c) {
+
+  // store the values so we can use them later
+   us = u
+   centroid = c
+
+  // draw the states
+  svg.append("path")
+      .attr("class", "states")
+      .datum(topojson.feature(us, us.objects.states))
+      .attr("d", path);
+
+  // draw the symbols on top
+  svg.selectAll(".symbol")
+      .data(centroid.features.sort(function(a, b) { return b.properties.population - a.properties.population; }))
+    .enter().append("path")
+      .attr("class", "symbol")
+      .attr("fill","green")
+      .attr("d", path.pointRadius(function(d) { return 10 }));
+}
+
+function recolor(color) {
+
+  // grab the symbol objects and modify their color 
+  // notice we don't need "enter" or "append" the objects are already there
+   svg.selectAll(".symbol")
+      .attr("fill",color);
+}
+
+   
+
+</script>
+
+</body>
+</html>
